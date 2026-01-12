@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Sederhana</title>
+    <link rel="stylesheet" href="calculator.css">
+
+</head>
+<body>
+    <div class="display">
+        <div class="display-number" id="display">0</div>
+    </div>
+    <div class="top-controls">
+        <div class="top-controls-inner">
+            <button id="toggleBtn" aria-label="Toggle theme" title="Toggle theme"></button>
+        </div>
+    </div>
+    <div class="container">
+        <div id="history">
+        <div>
+            <h3>Riwayat Kalkulasi</h3>
+            <div class="history-controls">
+                <button id="clearHistoryBtn">Hapus Riwayat</button>
+            </div>
+        </div>
+            <ul id="historyList"></ul>
+    </div>
+
+    <div class="calculator">
+
+        <div class="funcs" aria-hidden="true">
+            <button class="button-calculator" data-key="sin" onclick="applyTrig('sin')">sin</button>
+            <button class="button-calculator" data-key="cos" onclick="applyTrig('cos')">cos</button>
+            <button class="button-calculator" data-key="tan" onclick="applyTrig('tan')">tan</button>
+            <button class="button-calculator" data-key="x" onclick="append('x')">x</button>
+            <button class="button-calculator" data-key="sqrt" onclick="applySqrt()">√</button>
+            <button class="button-calculator" data-key="nroot" onclick="applyNthRoot()">n√</button>
+            <button class="button-calculator" data-key="evalx" onclick="evaluateForX()">Eval x</button>
+            <button class="button-calculator" data-key="solve" onclick="solveEquation()">Solve</button>
+        </div>
+
+        <div class="buttons">
+
+            <button class="C" data-key="C" onclick="cleardisplay()">C</button>
+            <button class="button-calculator" data-key="Backspace" onclick="backspace()">⌫</button>
+            <button class="button-calculator" data-key="%" onclick="append('%')">%</button>
+            <button class="button-calculator" data-key="^" onclick="append('^')">^</button>
+            <button class="button-calculator" data-key="/" onclick="append('/')">/</button>
+
+            <button class="button-calculator" data-key="7" onclick="append('7')">7</button>
+            <button class="button-calculator" data-key="8" onclick="append('8')">8</button>
+            <button class="button-calculator" data-key="9" onclick="append('9')">9</button>
+            <button class="operator" data-key="*" onclick="append('*')">*</button>
+
+            <button class="button-calculator" data-key="4" onclick="append('4')">4</button>
+            <button class="button-calculator" data-key="5" onclick="append('5')">5</button>
+            <button class="button-calculator" data-key="6" onclick="append('6')">6</button>
+            <button class="operator" data-key="-" onclick="append('-')">-</button>
+
+            <button class="button-calculator" data-key="1" onclick="append('1')">1</button>
+            <button class="button-calculator" data-key="2" onclick="append('2')">2</button>
+            <button class="button-calculator" data-key="3" onclick="append('3')">3</button>
+            <button class="operator" data-key="+" onclick="append('+')">+</button>
+
+            <button class="button-calculator zero" data-key="0" onclick="append('0')">0</button>
+            <button class="button-calculator" data-key="." onclick="append('.')">.</button>
+            <button data-key="=" onclick="calculate()">=</button>
+        </div>
+    </div>
+</div>
+
+<script src="calculator.js"></script>
+
+</body>
+</html> 

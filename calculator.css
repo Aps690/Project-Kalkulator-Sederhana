@@ -1,0 +1,390 @@
+/*template*/
+:root{
+    --white-primary: rgb(230, 240, 230);
+    --white-secondary: rgb(210, 210, 210);
+    --white-third: rgb(170, 170, 170);
+    --black-primary: rgb(30, 30, 30);
+    --black-secondary: rgb(50, 50, 50);
+    --black-third: rgb(80, 80, 80);
+    --theme-transition: 350ms;
+    --theme-easing: ease;
+    /* accents */
+    --accent-operator: #ff7a18; /* orange */
+    --accent-fn: #6b21a8; /* purple */
+    --accent-clear: #ef4444; /* red */
+    --accent-equals: #2563eb; /* blue (kept for =) */
+    /* history colors */
+    --history-bg: #f7fbf7;
+    --history-list-bg: #ffffff;
+    --history-text: var(--black-primary);
+    --history-accent: #6b8e23;
+}
+*{
+    margin: 0;
+    box-sizing: border-box;
+    transition: background-color 0.25s ease, transform 0.15s ease, color 0.2s ease;
+}
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--white-primary);
+    color: var(--black-primary);
+    min-height: 100vh;
+    padding: 18px;
+    overflow: auto;
+    transition: background-color var(--theme-transition) var(--theme-easing), color var(--theme-transition) var(--theme-easing);
+}
+
+/* Theme switching via CSS variables. Add `dark-mode` class on <body> to switch. */
+body.dark-mode {
+    --white-primary: rgb(30, 30, 30);
+    --white-secondary: rgb(40, 40, 40);
+    --white-third: rgb(60, 60, 60);
+    --black-primary: rgb(240, 240, 240);
+    --black-secondary: rgb(210, 210, 210);
+    --black-third: rgb(170, 170, 170);
+    background-color: #121212;
+    /* dark-mode accent adjustments */
+    --accent-operator: #ff9a4d;
+    --accent-fn: #8b5cf6;
+    --accent-clear: #fb7185;
+    --accent-equals: #3b82f6;
+    --history-bg: rgba(255,255,255,0.03);
+    --history-list-bg: rgba(255,255,255,0.02);
+    --history-text: var(--black-primary);
+    --history-accent: #9f7aea;
+}
+
+body.light-mode {
+    --white-primary: rgb(230, 240, 230);
+    --white-secondary: rgb(210, 210, 210);
+    --white-third: rgb(170, 170, 170);
+    --black-primary: rgb(30, 30, 30);
+    --black-secondary: rgb(50, 50, 50);
+    --black-third: rgb(80, 80, 80);
+    background-color: #ffffff;
+}
+
+/* Smooth transitions for theme changes (use CSS vars for duration/easing) */
+body, .display, .calculator, #history, #historylist, button, .display-number, .buttons, .buttons button {
+    transition: background-color var(--theme-transition) var(--theme-easing), color var(--theme-transition) var(--theme-easing), box-shadow 220ms ease, border-color var(--theme-transition) var(--theme-easing), transform 0.12s ease;
+}
+/*hasil-calculator*/
+.display {
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 14px;
+}
+.display-number {
+    background-color: var(--white-primary);
+    color: var(--black-primary);
+    font-size: 3rem;
+    padding: 18px 20px;
+    border-radius: 14px;
+    width: 100%;
+    max-width: 900px;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: right;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    margin: 0 auto 8px auto;
+}
+/* rely on CSS variables for dark-mode colors; no element-specific overrides */
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 18px;
+    align-items: stretch;
+}
+
+/* Top controls bar (contains theme toggle) */
+.top-controls{
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white-secondary);
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.14);
+    backdrop-filter: blur(6px);
+    pointer-events: auto;
+}
+.top-controls-inner{ display:flex; gap:8px; align-items:center; }
+
+/* ensure the fixed toggle doesn't obstruct small screens; reduce size and offset */
+@media (max-width: 480px) {
+    .top-controls { top: 8px; right: 8px; }
+    #toggleBtn { width:36px; height:36px; }
+}
+
+/* Dark-mode adjustment so the control remains visible against dark backgrounds */
+body.dark-mode .top-controls{
+    background: var(--white-secondary);
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+/*history*/
+#history {
+    background-color: var(--history-bg);
+    padding: 14px;
+    width: 36%;
+    color: var(--history-text);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+#history h3 {
+    font-size: 20px;
+    margin-right: 8px;
+}
+#history div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+/* history controls layout */
+.history-controls{ display:flex; gap:8px; align-items:center; }
+
+.history-controls button{ padding:6px 10px; font-size:0.9rem; }
+
+/* Shortcuts panel removed */
+#historylist {
+    margin: 10px 0 0 0;
+    background-color: var(--history-list-bg);
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--history-text);
+    overflow-y: auto;
+    flex: 1 1 auto;
+}
+
+/* alternating history rows */
+#historyList li:nth-child(odd){ background: transparent; }
+#historyList li:nth-child(even){ background: color-mix(in srgb, var(--history-list-bg) 90%, black 10%); }
+
+/* clear button style */
+.history-controls button#clearHistoryBtn{ background: transparent; border: 1px solid rgba(0,0,0,0.06); }
+.history-controls button#clearHistoryBtn:hover{ background: color-mix(in srgb, var(--history-accent) 10%, transparent); }
+/* steps styling */
+.steps pre{
+    white-space: pre-wrap;
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Segoe UI Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--history-text);
+    background: transparent;
+    padding: 6px 0;
+}
+/*button-dark-mode*/
+#toggleBtn, #clearHistoryBtn {
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--white-secondary);
+    color: var(--black-primary);
+    border: 1px solid rgba(0,0,0,0.06);
+}
+#toggleBtn{
+    /* icon-style circular button */
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+#toggleBtn svg{ width:18px; height:18px; display:block; }
+#toggleBtn:hover, #clearHistoryBtn:hover {
+    transform: translateY(-1px);
+}
+/* Buttons will use the variable-based colors; no separate dark-mode button override */
+/* perhitungan-calculator*/
+.calculator{
+    background-color: var(--white-primary);
+    padding: 18px;
+    width: 64%;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+.c{
+    background-color: rgba(255, 0, 0, 0.9);
+    color: #fff;
+    font-size: 1.05rem;
+}
+.c:hover{ transform: translateY(-2px); }
+.buttons{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+/* make zero span two columns for typical calculator layout */
+.buttons button.zero{ grid-column: span 2; }
+
+.funcs{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    margin-bottom:10px;
+}
+.funcs .button-calculator{ padding:8px 12px; height:40px; font-size:0.95rem; }
+button{
+    padding: 12px 10px;
+    font-size: 1.05rem;
+    border: none;
+    height: 56px;
+    border-radius: 10px;
+    background-color: var(--white-secondary);
+    color: var(--black-primary);
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+button{ position: relative; overflow: hidden; }
+button:hover{ transform: translateY(-2px); }
+.operator{
+    background: linear-gradient(180deg, var(--accent-operator), color-mix(in srgb, var(--accent-operator) 80%, black 20%));
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    border: none;
+}
+.operator:hover{ transform: translateY(-2px); filter: brightness(1.02); }
+
+/* make division button look like operator (orange) */
+button[data-key="/"]{
+    background: linear-gradient(180deg, var(--accent-operator), color-mix(in srgb, var(--accent-operator) 80%, black 20%));
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    border: none;
+}
+button[data-key="/"]:hover{ transform: translateY(-2px); filter: brightness(1.02); }
+
+/* function buttons row (sin/cos/tan/√/n√) */
+.funcs .button-calculator{
+    background: linear-gradient(180deg, var(--accent-fn), color-mix(in srgb, var(--accent-fn) 80%, black 20%));
+    color: #fff;
+    border: none;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+.funcs .button-calculator:hover{ transform: translateY(-2px); filter: brightness(1.04); }
+
+/* Clear button */
+button.C, button.C:hover{ background: linear-gradient(180deg, var(--accent-clear), color-mix(in srgb, var(--accent-clear) 80%, black 20%)); color:#fff; }
+
+/* Accessibility: focus outlines */
+button:focus{
+    outline: 3px solid color-mix(in srgb, var(--accent-operator) 30%, transparent 70%);
+    outline-offset: 2px;
+}
+
+/* keyboard press / click visual feedback */
+.kbd-press{
+    transform: scale(0.96) !important;
+    filter: brightness(0.95) !important;
+    box-shadow: inset 0 3px 8px rgba(0,0,0,0.18) !important;
+}
+
+/* :active fallback for mouse click */
+button:active{
+    transform: scale(0.97);
+    box-shadow: inset 0 3px 8px rgba(0,0,0,0.08);
+}
+
+/* better keyboard focus visibility */
+button:focus-visible{
+    outline: 3px solid color-mix(in srgb, var(--accent-equals) 35%, transparent 65%);
+    outline-offset: 3px;
+}
+
+/* Ripple effect */
+.ripple{
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: scale(0);
+    opacity: 0.6;
+    animation: ripple 600ms var(--theme-easing);
+    background: rgba(255,255,255,0.7);
+}
+body.dark-mode .ripple{ background: rgba(0,0,0,0.35); opacity: 0.45; }
+
+@keyframes ripple{
+    to{ transform: scale(2.5); opacity: 0; }
+}
+
+/* special styles for equals and wide buttons */
+button[onclick="calculate()"]{ background: linear-gradient(180deg,#3b82f6,#2563eb); color:#fff; grid-column: span 1; height: 56px; }
+button[onclick="calculate()"]:hover{ transform: translateY(-2px) scale(1.01); }
+
+/* responsive adjustments */
+@media (max-width: 800px){
+    .container{ flex-direction: column; padding: 0 8px; }
+    #history{ width: 100%; order: 2; }
+    .calculator{ width: 100%; order: 1; }
+    .display-number{ font-size: 2.4rem; }
+    button{ height: 52px; }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    :root { --theme-transition: 0ms; }
+    body, .display, .calculator, #history, #historylist, button, .display-number, .buttons, .buttons button {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* UI tidy overrides */
+/* ensure fixed top control doesn't overlap content */
+body{ padding-top: 76px; }
+
+.container{ align-items: flex-start; gap: 20px; }
+
+/* slightly narrower history and wider calculator for balance */
+#history{ width: 34%; min-width: 220px; }
+.calculator{ width: 66%; }
+
+/* history header layout */
+#history > div{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+#history h3{ margin: 0; font-size: 1.05rem; }
+
+/* history items */
+#historyList li{ padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,0.04); font-size: 0.95rem; color: var(--black-primary); }
+#historyList li:last-child{ border-bottom: none; }
+
+/* make calculation entries more compact and readable */
+.steps pre{ background: transparent; margin: 0; padding: 0; color: var(--black-primary); }
+
+/* buttons polish */
+button{ font-weight: 600; letter-spacing: 0.2px; }
+.buttons button{ height: 56px; border-radius: 10px; }
+.buttons{ gap: 12px; }
+.funcs{ gap:10px; margin-bottom:12px; }
+
+/* emphasize equals button visually and make it taller on larger screens */
+button[onclick="calculate()"]{ grid-row: span 1; height: 58px; box-shadow: 0 8px 20px rgba(37,99,235,0.18); }
+
+/* responsive tweaks for small screens */
+@media (max-width: 800px){
+    body{ padding-top: 56px; }
+    #history{ order: 2; width: 100%; }
+    .calculator{ order: 1; width: 100%; }
+    .top-controls{ top: 8px; right: 8px; }
+}
+
+/* ensure high contrast for top-controls in dark mode */
+body.dark-mode .top-controls{ background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); }
